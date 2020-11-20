@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Workspace {
+  id  String  @default(cuid()) @id
+
+  name  String
+
+  cats  Cat[]
+  dogs  Dog[]
+}
+
+model Cat {
+  id  String  @default(cuid()) @id
+
+  api_id  Int
+
+  workspace  Workspace  @relation(fields: [workspace_id], references: [id])
+  workspace_id  String
+
+  @@unique([api_id, workspace_id])
+}
+
+model Dog {
+  id  String  @default(cuid()) @id
+
+  api_id  String
+
+  workspace  Workspace  @relation(fields: [workspace_id], references: [id])
+  workspace_id  String
+
+  @@unique([api_id, workspace_id])
+}
